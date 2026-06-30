@@ -21,13 +21,12 @@ function futureDateValue(daysAhead = 7, hour, minute  = 0){
 
 test('Event Creation Test', async({browser}) =>
 {
-    //Step 1
+    //Step 1 - Login
     const context = await browser.newContext();
     const page = await context.newPage();
-
     await login(page);
 
-    //Step 2
+//Step 2 - Create New Event
    await page.getByRole('button' , {name: "Admin"}).click();
    await expect(page.getByRole('link' , { name: "Manage Events"}).first()).toBeVisible();
    await page.getByRole('link' , { name: "Manage Events"}).first().click();
