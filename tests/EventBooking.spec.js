@@ -44,7 +44,28 @@ test('Event Creation Test', async({browser}) =>
    await page.getByLabel('Total Seats').fill('50');
    await page.locator('#add-event-btn').click();
    await expect(page.getByText('Event created!')).toBeVisible();
-   await page.pause();
+   
+   
+   //Step 3 -  Find the event card and capture seats
+   await  page.getByTestId('nav-events').click();
+   const eventList = page.getByTestId("event-card");
+   await expect(eventList.first()).toBeVisible();
+   const myEventCard = await eventList.filter({has: page.locator('h3',{hasText: eventTitle})});
+   await expect(myEventCard).toBeVisible();
+//    const seatsText = await myEventCard.locator('.items-center span').textContent();
+//    const seatsBeforeBooking = Number(seatsText.split(' ')[0]);
+
+   const seatsBeforeBooking = 
+                Number(
+                        (await myEventCard.locator('.items-center span')
+                                      .textContent() 
+                        ).split(' ')[0]
+                      );
+   console.log(seatsBeforeBooking);
+   
+ 
+
+
 
 
 
