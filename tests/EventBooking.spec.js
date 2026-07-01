@@ -64,8 +64,37 @@ test('Event Creation Test', async({browser}) =>
     //Step 4 - On the matched event card, click the Book Now button (locate by data-testid="book-now-btn" inside the card)
     await myEventCard.getByTestId('book-now-btn').click();
 
+    //Step 5 - Fill booking form
+    const ticketCountText = await page.locator('#ticket-count').textContent();
+    await expect(ticketCountText).toBe('1');
+    await page.getByLabel('Full Name').fill('Odwa');
+    await page.locator('#customer-email').fill('makanda.odwa@gamil.com');
+    await page.getByPlaceholder('+91 98765 43210').fill('0213854469');
+    await page.locator('.confirm-booking-btn').click();
+
+    //Step 6 - Verify booking confirmation
+    await expect(page.locator('.booking-ref')).toBeVisible();
+    const bookingRef = (await page.locator('.booking-ref').textContent()).trim();
     
- 
+   //Step 7 - Verify in My Bookings
+   await Promise.all(
+    [
+        await page.getByRole('link', { name: 'View My Bookings' }).click(),
+        await page.waitForURL('**/bookings'),
+    
+   ]);
+
+   const bookingCards = page.locator('#booking-card');
+   await expect(bookingCards.first()).toBeVisible();
+   const myEventBookingCard = await bookingCards.filter({has: page.locator('.booking-ref',{hasText: bookingRef})});
+   await expect(myEventBookingCard).toBeVisible();
+   const bookingTitle = (await myEventBookingCard.locator('h3').textContent()).trim();
+   await expect(bookingTitle).toBe(eventTitle);
+  
+   
+   
+  // await expect(page.getByRole('heading', {hasText: 'My Bookings'}).first()).toBeVisible();
+  
 
 
 

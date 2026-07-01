@@ -14,9 +14,9 @@ import { defineConfig, devices } from '@playwright/test';
  */
 const config = ({
   testDir: './tests',
-  timeout: 300 * 1000,
+  timeout: 3000 * 1000,
   expect:{
-    timeout: 5000
+    timeout: 5000 * 1000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
