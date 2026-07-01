@@ -52,8 +52,7 @@ test('Event Creation Test', async({browser}) =>
    await expect(eventList.first()).toBeVisible();
    const myEventCard = await eventList.filter({has: page.locator('h3',{hasText: eventTitle})});
    await expect(myEventCard).toBeVisible();
-//    const seatsText = await myEventCard.locator('.items-center span').textContent();
-//    const seatsBeforeBooking = Number(seatsText.split(' ')[0]);
+
 
    const seatsBeforeBooking = 
                 Number(
@@ -61,8 +60,11 @@ test('Event Creation Test', async({browser}) =>
                                       .textContent() 
                         ).split(' ')[0]
                       );
-   console.log(seatsBeforeBooking);
-   
+
+    //Step 4 - On the matched event card, click the Book Now button (locate by data-testid="book-now-btn" inside the card)
+    await myEventCard.getByTestId('book-now-btn').click();
+
+    
  
 
 
