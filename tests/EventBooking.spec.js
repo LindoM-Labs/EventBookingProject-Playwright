@@ -90,11 +90,21 @@ test('Event Creation Test', async({browser}) =>
    await expect(myEventBookingCard).toBeVisible();
    const bookingTitle = (await myEventBookingCard.locator('h3').textContent()).trim();
    await expect(bookingTitle).toBe(eventTitle);
-  
-   
-   
-  // await expect(page.getByRole('heading', {hasText: 'My Bookings'}).first()).toBeVisible();
-  
+
+   //Step 8 - Verify seat reduction
+   await  page.getByTestId('nav-events').click();
+   await  page.reload();
+   await expect(page.getByTestId("event-card").first()).toBeVisible();
+   const myEventCard2 = await eventList.filter({has: page.locator('h3',{hasText: eventTitle})});
+   await expect(myEventCard2).toBeVisible();
+   const seatsAfterBooking = 
+                Number(
+                        (await myEventCard2.locator('.items-center span')
+                                      .textContent() 
+                        ).split(' ')[0]
+                      );
+    await expect(seatsAfterBooking).toEqual(seatsBeforeBooking - 1);
+
 
 
 
